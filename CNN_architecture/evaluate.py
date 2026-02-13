@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
-import matplotlib.pyplot as plt  # ✅ for visualization
+import matplotlib.pyplot as plt  
 from config import Config, MODEL_NAME
 from load_data import load_data
 from train import CNNModel, train_model
