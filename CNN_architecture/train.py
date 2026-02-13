@@ -88,9 +88,13 @@ class CNNModel(nn.Module):
         x = self.classifier(x)
         return x
 
-def train_model(dataset_name):
+def train_model(dataset_name, return_history=False):
     """
     Function for training a CNN model.
+    
+    Args:
+        dataset_name: Name of the dataset to train on
+        return_history: If True, returns (model, history_dict), otherwise just returns model
     """
     print(f"\n--- Training CNN for {dataset_name} ---")
     config = Config()
@@ -99,7 +103,7 @@ def train_model(dataset_name):
     features, labels = load_data(dataset_name)
     if features is None or labels is None:
         print(f"Could not load data for {dataset_name}. Exiting training.")
-        return
+        return None if not return_history else (None, None)
 
     # Ensure features are float and labels are long
     features = features.float()
@@ -133,18 +137,36 @@ def train_model(dataset_name):
     data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     print(f"DataLoader created with batch_size={batch_size}")
 
+    # Initialize training history
+    training_history = {'loss': []}
+
     # Realistic training loop
     for epoch in range(config.epochs):
+        epoch_loss = 0.0
+        num_batches = 0
+        
         for batch_idx, (batch_features, batch_labels) in enumerate(data_loader):
             optimizer.zero_grad()
             outputs = model(batch_features)
             loss = criterion(outputs, batch_labels)
             loss.backward()
             optimizer.step()
-        print(f'Epoch [{epoch+1}/{config.epochs}], Loss: {loss.item():.4f}')
+            
+            epoch_loss += loss.item()
+            num_batches += 1
+        
+        # Calculate average loss for the epoch
+        avg_epoch_loss = epoch_loss / num_batches
+        training_history['loss'].append(avg_epoch_loss)
+        
+        print(f'Epoch [{epoch+1}/{config.epochs}], Loss: {avg_epoch_loss:.4f}')
 
     print(f"Training for {dataset_name} complete.")
-    return model # Return trained model for evaluation example
+    
+    if return_history:
+        return model, training_history
+    else:
+        return model
 
 if __name__ == '__main__':
     print("Starting CNN training example...")
