@@ -74,7 +74,7 @@ pip install torch torchvision matplotlib pandas requests scikit-learn
 
 ### Training a Model
 
-To train a model on the default dataset, navigate to the directory for your desired architecture (CNN_architecture or MLP_architecture):
+To train a model on the default dataset, navigate to the directory for your desired architecture (CNN_architecture or MLP_architecture) and run:
 
 ```bash
 python train.py
