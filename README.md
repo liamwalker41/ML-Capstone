@@ -31,10 +31,25 @@ Install matplotlib for visualization:
 pip install matplotlib
 ```
 
+Install pandas:
+```bash
+pip install pandas
+```
+
+Install requests:
+```bash
+pip install requests
+```
+
+Install sklearn:
+```bash
+pip install scikit-learn
+```
+
 Or install all dependencies at once:
 
 ```bash
-pip install torch torchvision matplotlib
+pip install torch torchvision matplotlib pandas requests scikit-learn
 ```
 
 ## Project Structure
