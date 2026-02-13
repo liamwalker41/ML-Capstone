@@ -1,9 +1,40 @@
 import torch
 import torch.nn as nn # Not strictly needed for evaluation but good practice
 from torch.utils.data import TensorDataset, DataLoader # Import TensorDataset and DataLoader
+import matplotlib.pyplot as plt
 from config import Config, MODEL_NAME
 from load_data import load_data
 from train import MLPModel, train_model # Import MLPModel and train_model from train.py
+
+
+def plot_training_results(training_history, eval_accuracy, dataset_name):
+    """
+    Plot training loss and evaluation accuracy.
+    """
+    epochs = range(1, len(training_history['loss']) + 1)
+
+    plt.figure(figsize=(10, 5))
+
+    # Plot 1: Training Loss per Epoch
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, training_history['loss'], 'b-o', label='Training Loss')
+    plt.title(f'{dataset_name} - Training Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+
+    # Plot 2: Evaluation Accuracy
+    plt.subplot(1, 2, 2)
+    plt.bar(['Accuracy'], [eval_accuracy], color='green')
+    plt.title(f'{dataset_name} - Evaluation Accuracy')
+    plt.ylim(0, 100)
+    plt.ylabel('Accuracy (%)')
+    plt.grid(axis='y')
+
+    plt.tight_layout()
+    plt.show()
+
 
 def evaluate_model(dataset_name, model):
     """
@@ -42,15 +73,18 @@ def evaluate_model(dataset_name, model):
     accuracy = 100 * correct / total
 
     print(f"Evaluation for {dataset_name} complete. Accuracy: {accuracy:.2f}%")
+    return accuracy
+
 
 if __name__ == '__main__':
     # Example Usage:
     print("Starting MLP evaluation example...")
 
-    # Train and evaluate UCI Adult
+    # Train and evaluate with visualization
     print(f"\n--- Training {MODEL_NAME} model for evaluation ---")
-    mlp_model = train_model(MODEL_NAME)
+    mlp_model, training_history = train_model(MODEL_NAME, return_history=True)
     if mlp_model: # Only evaluate if training was successful
-        evaluate_model(MODEL_NAME, mlp_model)
+        eval_accuracy = evaluate_model(MODEL_NAME, mlp_model)
+        plot_training_results(training_history, eval_accuracy, MODEL_NAME)
 
     print("MLP evaluation examples finished.")
