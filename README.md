@@ -118,7 +118,7 @@ Each dataset configuration includes:
 
 ### CNNModel Class
 
-The `MLPModel` class automatically adapts to the input data:
+The `CNNModel` class automatically adapts to the input data:
 
 - **1D CNN** (for UCI Adult dataset): Uses Conv1d layers for sequential/tabular data
 - **2D CNN** (for image datasets): Uses Conv2d layers with customizable architecture
