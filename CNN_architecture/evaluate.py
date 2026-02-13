@@ -76,7 +76,7 @@ if __name__ == '__main__':
     print("Starting CNN evaluation example...")
 
     # Train and get history
-    cnn_model, training_history = train_model(MODEL_NAME, return_history=True)  # ✅ modify train_model to return history
+    cnn_model, training_history = train_model(MODEL_NAME, return_history=True)
     if cnn_model:
         eval_accuracy = evaluate_model(MODEL_NAME, cnn_model)
         plot_training_results(training_history, eval_accuracy, MODEL_NAME)
